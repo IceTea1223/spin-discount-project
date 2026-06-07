@@ -636,19 +636,7 @@ session_start();
                 $btn.html(originalText).prop('disabled', false);
                 if(response && response.is_duplicate) {
                     // Show duplicate modal with details
-                    let detailsHtml = '<ul>';
-                    if(response.duplicate_name) {
-                        detailsHtml += `<li>❌ Name "${fullname}" already exists (Previous spin on: ${response.existing_name_date || 'previous date'})</li>`;
-                    }
-                    if(response.duplicate_tel) {
-                        detailsHtml += `<li>❌ Telephone "${tel}" already exists (Previous spin on: ${response.existing_tel_date || 'previous date'})</li>`;
-                    }
-                    detailsHtml += '</ul>';
-                    $('#duplicateDetails').html(detailsHtml);
-                    $('#duplicateModal').fadeIn();
                     
-                    // Store form data for confirmation
-                    window.pendingFormData = studentData;
                 } else {
                     // No duplicate, proceed directly
                     saveStudent(studentData);

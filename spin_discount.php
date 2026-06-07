@@ -147,6 +147,7 @@ if(!isset($_SESSION['student_id'])) {
             color: white;
             text-shadow: 0 4px 20px rgba(0,0,0,0.3);
             margin-bottom: 10px;
+            margin-top: 0px;
         }
 
         /* BIGGER Student Card - Premium Large Design */
@@ -155,7 +156,7 @@ if(!isset($_SESSION['student_id'])) {
     border-radius: 32px;
     padding: 20px 22px;
     width: 100%;
-    max-width: 500px;
+    max-width: 400px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
     border: 2px solid rgba(255, 215, 0, 0.4);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -427,14 +428,14 @@ if(!isset($_SESSION['student_id'])) {
             height: 0;
             border-left: 26px solid transparent;
             border-right: 26px solid transparent;
-            border-top: 56px solid #FFC107;
+            border-top: 100px solid #FFC107;
         }
 
         canvas {
             display: block;
             margin: 0 auto;
             max-width: 100%;
-            height: auto;
+            height: 800px;
             border-radius: 50%;
             box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5);
             background: rgba(45,31,158,0.05);
@@ -718,10 +719,10 @@ if(!isset($_SESSION['student_id'])) {
             text-align: center;
             text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
             letter-spacing: 1px;
-            background:  #ffff00;
+            background:  #000000;
             -webkit-background-clip: text;
             background-clip: text;
-            color: transparent;
+            color: black;
             margin-bottom: 10px;
         }
 
@@ -824,21 +825,25 @@ if(!isset($_SESSION['student_id'])) {
     <div class="spin-full-container">
         <div class="spin-content">
             
-            <div class="brand-logo">
+           <div style="display: flex;">
+
+            <div class="spin-header">
+                <h1 class="spin-title">សូមស្វាគមន៍មកកាន់ កងនាំសំណាង!</h1>
+            </div>
+              
+                 
+           </div>
+
+            <!-- Flex Container with BIGGER Student Card -->
+            <div class="flex-container">
+              <!-- BIGGER Student Card - Premium Design -->
+                <div class="student-card">
+                    <div class="brand-logo">
                 <div class="logo-circle">
                     <img class="img" src="https://scontent.fpnh5-3.fna.fbcdn.net/v/t39.30808-6/718675229_1688689795712419_5978467431059090522_n.jpg?stp=dst-jpg_tt6&cstp=mx864x864&ctp=p526x296&_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGf_umBXPfYYpsW4kfpSYG6kKA-rXk9GyyQoD6teT0bLId9yJ6ZjY6QEgNYlqnOcC05dY0_0tFP7ymk3jiRUvqR&_nc_ohc=2voHNNPM3xwQ7kNvwGjJdvz&_nc_oc=AdqAUUB_4dF5H_Kxl76uEoURV9cFeeBqAjsYk-hprlBeLpxW_rUqvi46NrLe9KeMbaU&_nc_zt=23&_nc_ht=scontent.fpnh5-3.fna&_nc_gid=oc8Ux5fk2kwUjlcdvV-bOw&_nc_ss=7b2a8&oh=00_Af9e1n7MvIlEXJxLaHTeq8vhafEiyWVr9TxHsNokCdySVw&oe=6A2991F7" alt="ETEC Center Logo">
                 </div>
                 <h1 class="teacher-name">គ្រូអាយធីចិត្តល្អ</h1>
             </div>
-
-            <div class="spin-header">
-                <h1 class="spin-title">សូមស្វាគមន៍មកកាន់ កងនាំសំណាង!</h1>
-            </div>
-            
-            <!-- Flex Container with BIGGER Student Card -->
-            <div class="flex-container">
-                <!-- BIGGER Student Card - Premium Design -->
-                <div class="student-card">
                     <div class="card-header">
                         <div class="avatar-circle">
                             <?php 
@@ -878,7 +883,6 @@ if(!isset($_SESSION['student_id'])) {
                         <span class="price-amount">$<?php echo number_format($_SESSION['course_price'], 2); ?></span>
                     </div>
                 </div>
-                
                 <!-- Wheel Section -->
                 <div class="wheel-section">
                     <div class="wheel-wrapper">
@@ -945,221 +949,568 @@ if(!isset($_SESSION['student_id'])) {
     </div>
 </div>
     
-    <script>
-    // Weighted discount array
-    const WEIGHTED_DISCOUNTS = [
-        100, 100, 100,
-        90, 90,
-        80, 80, 80,
-        70, 70, 70, 70,
-        60, 60, 60, 60, 60,
-        50, 50, 50, 50, 50, 50,
-        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
-        20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   <script>
+    // ===============================
+// PRIZES
+// ===============================
+const WEIGHTED_DISCOUNTS = [
+    100,
+    "អាយធីស្មោះ",
+    30,
+    60,
+    80,
+    "អាយធីស្រឡាញ់គេម្នាក់ឯង",
+    100,
+    50,
+    30,
+    90,
+    100,
+    "អាយធីសាវ៉ា",
+    70,
+    90,
+    80
+];
+
+const SEGMENTS = [...WEIGHTED_DISCOUNTS];
+
+const COLOR_PALETTE = [
+    '#FFD700', // Gold
+    '#003366', // Navy Blue
+    '#FFD700',
+    '#003366',
+    '#FFD700',
+    '#003366',
+    '#FFD700',
+    '#003366',
+    '#FFD700',
+    '#003366',
+    '#FFD700',
+    '#003366',
+    '#FFD700',
+    '#003366',
+    '#FFD700'
+];
+
+let currentRotation = 0;
+let spinning = false;
+let animFrame = null;
+
+const canvas = document.getElementById('wheelCanvas');
+const ctx = canvas.getContext('2d');
+
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+const radius = 215;
+
+// ===============================
+// RANDOM PRIZE
+// ===============================
+function getRandomSegmentValue() {
+    return SEGMENTS[
+        Math.floor(Math.random() * SEGMENTS.length)
     ];
-    
-    const discountFrequency = new Map();
-    WEIGHTED_DISCOUNTS.forEach(d => discountFrequency.set(d, (discountFrequency.get(d) || 0) + 1));
-    const SEGMENTS = Array.from(discountFrequency.keys()).sort((a,b) => b - a);
-    const FREQ_WEIGHTS = SEGMENTS.map(d => discountFrequency.get(d));
-    const TOTAL_WEIGHT = FREQ_WEIGHTS.reduce((a,b) => a + b, 0);
-    
-    const COLOR_PALETTE = ['#EF476F', '#FFB347', '#06D6A0', '#118AB2', '#FFD166', '#8D99AE', '#F77F00', '#2B2D42', '#E63946', '#4895EF'];
-    
-    let currentRotation = 0;
-    let spinning = false;
-    let animFrame = null;
-    const canvas = document.getElementById('wheelCanvas');
-    const ctx = canvas.getContext('2d');
-    const size = 480;
-    const centerX = size/2;
-    const centerY = size/2;
-    const radius = 215;
-    
-    function getRandomSegmentValue() {
-        let rand = Math.random() * TOTAL_WEIGHT;
-        let accum = 0;
-        for (let i=0; i<SEGMENTS.length; i++) {
-            accum += FREQ_WEIGHTS[i];
-            if (rand <= accum) return SEGMENTS[i];
-        }
-        return SEGMENTS[0];
-    }
-    
-    function drawWheel() {
-        const angleStep = (Math.PI * 2) / SEGMENTS.length;
-        for (let i = 0; i < SEGMENTS.length; i++) {
-            const start = i * angleStep + currentRotation;
-            const end = (i+1) * angleStep + currentRotation;
-            ctx.beginPath();
-            ctx.fillStyle = COLOR_PALETTE[i % COLOR_PALETTE.length];
-            ctx.moveTo(centerX, centerY);
-            ctx.arc(centerX, centerY, radius, start, end);
-            ctx.fill();
-            ctx.strokeStyle = 'rgba(255,255,200,0.8)';
-            ctx.lineWidth = 2.5;
-            ctx.stroke();
-            
-            ctx.save();
-            ctx.translate(centerX, centerY);
-            ctx.rotate(start + angleStep/2);
-            ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 21px "Nokora", "Segoe UI", system-ui';
-            ctx.shadowBlur = 0;
-            const text = SEGMENTS[i] + '%';
-            ctx.fillText(text, radius * 0.68, 11);
-            ctx.restore();
-        }
-        
+}
+
+// ===============================
+// DRAW WHEEL
+// ===============================
+function drawWheel() {
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    // Outer Ring
+    ctx.beginPath();
+    ctx.arc(
+        centerX,
+        centerY,
+        radius + 12,
+        0,
+        Math.PI * 2
+    );
+    ctx.strokeStyle = '#FFD700';
+    ctx.lineWidth = 12;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(
+        centerX,
+        centerY,
+        radius + 24,
+        0,
+        Math.PI * 2
+    );
+    ctx.strokeStyle = '#FFF4B0';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+    const angleStep =
+        (Math.PI * 2) / SEGMENTS.length;
+
+    for (
+        let i = 0;
+        i < SEGMENTS.length;
+        i++
+    ) {
+
+        const start =
+            i * angleStep +
+            currentRotation;
+
+        const end =
+            (i + 1) * angleStep +
+            currentRotation;
+
+        const gradient =
+            ctx.createLinearGradient(
+                centerX - radius,
+                centerY - radius,
+                centerX + radius,
+                centerY + radius
+            );
+
+        gradient.addColorStop(
+            0,
+            COLOR_PALETTE[
+                i % COLOR_PALETTE.length
+            ]
+        );
+
+        gradient.addColorStop(
+            1,
+            '#ffffff22'
+        );
+
         ctx.beginPath();
-        ctx.arc(centerX, centerY, 65, 0, Math.PI*2);
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = gradient;
+        ctx.moveTo(
+            centerX,
+            centerY
+        );
+        ctx.arc(
+            centerX,
+            centerY,
+            radius,
+            start,
+            end
+        );
         ctx.fill();
-        ctx.strokeStyle = '#FFB347';
-        ctx.lineWidth = 4;
+
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 3;
         ctx.stroke();
-        
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, 52, 0, Math.PI*2);
-        ctx.fillStyle = '#0b00b3';
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, 12, 0, Math.PI*2);
-        ctx.fillStyle = '#FFD966';
-        ctx.fill();
-    }
-    
-    function getCurrentSegmentValue() {
-        const pointerAngle = -Math.PI / 2;
-        let adjusted = pointerAngle - currentRotation;
-        adjusted = ((adjusted % (Math.PI*2)) + Math.PI*2) % (Math.PI*2);
-        const angleStep = (Math.PI*2)/SEGMENTS.length;
-        let idx = Math.floor(adjusted / angleStep) % SEGMENTS.length;
-        return SEGMENTS[idx];
-    }
-    
-    function spinWheel(callback) {
-        if (spinning) return;
-        spinning = true;
-        const duration = 3000;
-        const startTime = performance.now();
-        const startRotation = currentRotation;
-        const targetDiscount = getRandomSegmentValue();
-        const targetIdx = SEGMENTS.indexOf(targetDiscount);
-        const angleStep = (Math.PI*2)/SEGMENTS.length;
-        const targetSegMid = (targetIdx * angleStep) + (angleStep/2);
-        const fullRotations = Math.floor(Math.random() * 12) + 12;
-        let targetAbs = (fullRotations * Math.PI*2) + targetSegMid;
-        const pointerOffset = -Math.PI/2;
-        targetAbs = targetAbs - pointerOffset;
-        targetAbs = targetAbs % (Math.PI*2);
-        const finalRotationVal = startRotation + targetAbs + (fullRotations * Math.PI*2);
-        
-        function step(now) {
-            const elapsed = now - startTime;
-            const t = Math.min(1, elapsed/duration);
-            const ease = 1 - Math.pow(1-t, 4);
-            currentRotation = startRotation + (finalRotationVal - startRotation) * ease;
-            drawWheel();
-            if (t < 1) {
-                animFrame = requestAnimationFrame(step);
-            } else {
-                const finalDiscount = getCurrentSegmentValue();
-                spinning = false;
-                callback(finalDiscount);
-            }
+
+        ctx.save();
+
+        ctx.translate(
+            centerX,
+            centerY
+        );
+
+        ctx.rotate(
+            start + angleStep / 2
+        );
+
+        ctx.fillStyle = '#FFFFFF';
+
+        ctx.font =
+            'bold 16px "Kantumruy Pro", sans-serif';
+
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        ctx.shadowColor =
+            'rgba(0,0,0,0.6)';
+
+        ctx.shadowBlur = 0;
+
+        let text =
+            typeof SEGMENTS[i] ===
+            'number'
+                ? SEGMENTS[i] + '%'
+                : SEGMENTS[i];
+
+        if (text.length > 12) {
+            text =
+                text.substring(
+                    0,
+                    12
+                ) + '...';
         }
-        if (animFrame) cancelAnimationFrame(animFrame);
-        animFrame = requestAnimationFrame(step);
+
+        ctx.fillText(
+            text,
+            radius * 0.62,
+            0
+        );
+
+        ctx.restore();
     }
-    
-    drawWheel();
-    
-    $(document).ready(function() {
-        $('#spinBtn').click(function() {
-            if (spinning) return;
-            const $btn = $(this);
-            $btn.prop('disabled', true).addClass('spinning');
-            
-            spinWheel(function(discount) {
-                $btn.removeClass('spinning');
-                const originalPrice = parseFloat(<?php echo json_encode($_SESSION['course_price']); ?>);
-                const discountAmount = (originalPrice * discount) / 100;
-                const finalPrice = originalPrice - discountAmount;
-                
-                let p = 0;
-                const pInterval = setInterval(() => {
-                    if (p >= discount) {
-                        clearInterval(pInterval);
-                        $('#discountPercent').text(discount);
+
+    // Center White Circle
+    ctx.beginPath();
+    ctx.arc(
+        centerX,
+        centerY,
+        65,
+        0,
+        Math.PI * 2
+    );
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+
+    ctx.strokeStyle =
+        '#FFD700';
+
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    // Blue Circle
+    const centerGradient =
+        ctx.createRadialGradient(
+            centerX,
+            centerY,
+            5,
+            centerX,
+            centerY,
+            60
+        );
+
+    centerGradient.addColorStop(
+        0,
+        '#60A5FA'
+    );
+
+    centerGradient.addColorStop(
+        1,
+        '#1E3A8A'
+    );
+
+    ctx.beginPath();
+    ctx.arc(
+        centerX,
+        centerY,
+        52,
+        0,
+        Math.PI * 2
+    );
+    ctx.fillStyle =
+        centerGradient;
+    ctx.fill();
+
+    // Center Dot
+    ctx.beginPath();
+    ctx.arc(
+        centerX,
+        centerY,
+        12,
+        0,
+        Math.PI * 2
+    );
+    ctx.fillStyle =
+        '#FFD700';
+    ctx.fill();
+}
+
+// ===============================
+// DETECT RESULT
+// ===============================
+function getCurrentSegmentValue() {
+
+    const pointerAngle =
+        -Math.PI / 2;
+
+    let adjusted =
+        pointerAngle -
+        currentRotation;
+
+    adjusted =
+        (
+            (
+                adjusted %
+                (Math.PI * 2)
+            ) +
+            Math.PI * 2
+        ) %
+        (Math.PI * 2);
+
+    const angleStep =
+        (Math.PI * 2) /
+        SEGMENTS.length;
+
+    const idx =
+        Math.floor(
+            adjusted /
+            angleStep
+        ) %
+        SEGMENTS.length;
+
+    return SEGMENTS[idx];
+}
+
+// ===============================
+// SPIN
+// ===============================
+function spinWheel(callback) {
+
+    if (spinning) return;
+
+    spinning = true;
+
+    const duration = 4000;
+
+    const startTime =
+        performance.now();
+
+    const startRotation =
+        currentRotation;
+
+    const targetPrize =
+        getRandomSegmentValue();
+
+    const targetIndex =
+        SEGMENTS.indexOf(
+            targetPrize
+        );
+
+    const angleStep =
+        (Math.PI * 2) /
+        SEGMENTS.length;
+
+    const targetAngle =
+        (
+            targetIndex *
+            angleStep
+        ) +
+        angleStep / 2;
+
+    const fullRotations =
+        10 +
+        Math.floor(
+            Math.random() * 5
+        );
+
+    const finalRotation =
+        startRotation +
+        (
+            fullRotations *
+            Math.PI *
+            2
+        ) +
+        targetAngle +
+        Math.PI / 2;
+
+    function animate(now) {
+
+        const elapsed =
+            now -
+            startTime;
+
+        const progress =
+            Math.min(
+                elapsed /
+                duration,
+                1
+            );
+
+        const ease =
+            1 -
+            Math.pow(
+                1 - progress,
+                4
+            );
+
+        currentRotation =
+            startRotation +
+            (
+                finalRotation -
+                startRotation
+            ) *
+            ease;
+
+        drawWheel();
+
+        if (
+            progress < 1
+        ) {
+            animFrame =
+                requestAnimationFrame(
+                    animate
+                );
+        } else {
+
+            spinning = false;
+
+            callback(
+                getCurrentSegmentValue()
+            );
+        }
+    }
+
+    requestAnimationFrame(
+        animate
+    );
+}
+
+// ===============================
+// INITIAL DRAW
+// ===============================
+drawWheel();
+
+// ===============================
+// BUTTON EVENTS
+// ===============================
+$(document).ready(function () {
+
+    $('#spinBtn').click(function () {
+
+        if (spinning) return;
+
+        const $btn =
+            $(this);
+
+        $btn.prop(
+            'disabled',
+            true
+        );
+
+        spinWheel(
+            function (prize) {
+
+                const originalPrice =
+                    parseFloat(
+                        <?php echo json_encode($_SESSION['course_price']); ?>
+                    );
+
+                const discount =
+                    typeof prize ===
+                    'number'
+                        ? prize
+                        : 0;
+
+                const discountAmount =
+                    (
+                        originalPrice *
+                        discount
+                    ) / 100;
+
+                const finalPrice =
+                    originalPrice -
+                    discountAmount;
+
+                $('#discountPercent')
+                    .text(
+                        discount
+                    );
+
+                $('#originalPrice')
+                    .text(
+                        '$' +
+                        originalPrice.toFixed(
+                            2
+                        )
+                    );
+
+                $('#discountAmount')
+                    .text(
+                        '-$' +
+                        discountAmount.toFixed(
+                            2
+                        )
+                    );
+
+                $('#finalPrice')
+                    .text(
+                        '$' +
+                        finalPrice.toFixed(
+                            2
+                        )
+                    );
+
+                $('#prizeName')
+                    .text(
+                        prize
+                    );
+
+                $('#resultModal')
+                    .css(
+                        'display',
+                        'flex'
+                    )
+                    .hide()
+                    .fadeIn(
+                        300
+                    );
+
+                window.selectedPrize =
+                    prize;
+
+                window.selectedDiscount =
+                    discount;
+
+                $btn.prop(
+                    'disabled',
+                    false
+                );
+            }
+        );
+    });
+
+    $('#claimBtn').click(function () {
+
+        $.ajax({
+
+            url:
+                'api/process_spin.php',
+
+            type:
+                'POST',
+
+            dataType:
+                'json',
+
+            data: {
+                prize:
+                    window.selectedPrize,
+                discount:
+                    window.selectedDiscount
+            },
+
+            success:
+                function (
+                    resp
+                ) {
+
+                    if (
+                        resp.success
+                    ) {
+
+                        window.location.href =
+                            'result.php';
+
                     } else {
-                        p += Math.ceil(discount/18);
-                        if (p > discount) p = discount;
-                        $('#discountPercent').text(Math.floor(p));
-                    }
-                }, 30);
-                
-                $('#originalPrice').text('$' + originalPrice.toFixed(2));
-                let curAmt = 0;
-                const amtInterval = setInterval(() => {
-                    if (curAmt >= discountAmount) {
-                        clearInterval(amtInterval);
-                        $('#discountAmount').text('-$' + discountAmount.toFixed(2));
-                    } else {
-                        curAmt += discountAmount / 18;
-                        if (curAmt > discountAmount) curAmt = discountAmount;
-                        $('#discountAmount').text('-$' + curAmt.toFixed(2));
-                    }
-                }, 30);
-                
-                let curFinal = originalPrice;
-                const finalInterval = setInterval(() => {
-                    if (curFinal <= finalPrice) {
-                        clearInterval(finalInterval);
-                        $('#finalPrice').text('$' + finalPrice.toFixed(2));
-                    } else {
-                        curFinal -= (originalPrice - finalPrice) / 18;
-                        if (curFinal < finalPrice) curFinal = finalPrice;
-                        $('#finalPrice').text('$' + curFinal.toFixed(2));
-                    }
-                }, 30);
-                
-                $('#resultModal').css('display', 'flex').hide().fadeIn(300);
-                window.selectedDiscount = discount;
-                $btn.prop('disabled', false);
-            });
-        });
-        
-        $('#claimBtn').click(function() {
-            const $btn = $(this);
-            $btn.html('<span>Processing...</span><span>⏳</span>').prop('disabled', true);
-            $.ajax({
-                url: 'api/process_spin.php',
-                method: 'POST',
-                data: { discount: window.selectedDiscount },
-                dataType: 'json',
-                success: function(resp) {
-                    if (resp.success) {
-                        $btn.html('<span>✓ Redirecting...</span><span></span>');
-                        setTimeout(() => { window.location.href = 'result.php'; }, 900);
-                    } else {
-                        alert('Error: ' + (resp.error || 'Could not save data'));
-                        $btn.html('<span>Claim My Discount</span><span>→</span>').prop('disabled', false);
+
+                        alert(
+                            resp.error ||
+                            'Error'
+                        );
                     }
                 },
-                error: function() {
-                    alert('Network error. Please try again.');
-                    $btn.html('<span>Claim My Discount</span><span>→</span>').prop('disabled', false);
+
+            error:
+                function () {
+
+                    alert(
+                        'Network Error'
+                    );
                 }
-            });
-        });
-        
-        $(window).click(function(e) {
-            if ($(e.target).hasClass('result-modal')) $('#resultModal').fadeOut();
         });
     });
-    </script>
+});
+   </script>
 </body>
 </html>
