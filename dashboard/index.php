@@ -13,7 +13,7 @@ include '../includes/functions.php';
 </head>
 <body>
     <div class="dashboard-container">
-        <h1>📊 Admin Dashboard</h1>
+        <h1>Admin Dashboard</h1>
         
         <div class="stats-grid">
             <?php
