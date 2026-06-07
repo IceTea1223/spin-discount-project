@@ -522,13 +522,14 @@ session_start();
     <script src="assets/js/courses.js"></script>
     <script>
     $(document).ready(function() {
-        // Load courses
+        // Load courses - show only course name (no price at course level)
         if (typeof coursesData !== 'undefined' && coursesData.length) {
             coursesData.forEach(course => {
-                $('#course_id').append(`<option value="${course.id}">${course.course} - $${course.price}</option>`);
+                $('#course_id').append(`<option value="${course.id}">${course.course}</option>`);
             });
         } else {
-            $('#course_id').append(`<option value="1">English for IT - $350</option><option value="2">Khmer Typography - $200</option>`);
+            console.error('coursesData not loaded or empty');
+            $('#course_id').append(`<option value="1">Web + ReactJs</option><option value="2">PHP + Laravel</option>`);
         }
 
         window.getCourseById = function(id) {
@@ -546,7 +547,8 @@ session_start();
             if(course && course.schedules) {
                 $('#schedule_index').html('<option value="">Select Schedule</option>').prop('disabled', false);
                 course.schedules.forEach((schedule, index) => {
-                    $('#schedule_index').append(`<option value="${index}">${schedule.day} (${schedule.time})</option>`);
+                    // Show schedule with its specific price
+                    $('#schedule_index').append(`<option value="${index}">${schedule.day} (${schedule.time}) - $${schedule.price}</option>`);
                 });
                 $('#courseInfo').hide();
             } else {
@@ -555,7 +557,7 @@ session_start();
             }
         });
         
-        // On schedule change
+        // On schedule change - USE SCHEDULE PRICE (not course.price)
         $('#schedule_index').change(function() {
             const courseId = parseInt($('#course_id').val());
             const scheduleIndex = parseInt($(this).val());
@@ -563,11 +565,13 @@ session_start();
             
             if(course && !isNaN(scheduleIndex) && course.schedules && course.schedules[scheduleIndex]) {
                 const schedule = course.schedules[scheduleIndex];
+                const schedulePrice = schedule.price; // Get price from schedule
+                
                 $('#course_name').val(course.course);
-                $('#course_price').val(course.price);
+                $('#course_price').val(schedulePrice); // Use schedule price
                 $('#course_schedule').val(`${schedule.day} (${schedule.time})`);
                 $('#displayCourse').text(course.course);
-                $('#displayPrice').text(course.price);
+                $('#displayPrice').text(schedulePrice); // Display schedule price
                 $('#displaySchedule').text(`${schedule.day} (${schedule.time})`);
                 $('#courseInfo').fadeIn(200);
             } else {
@@ -736,6 +740,6 @@ session_start();
             }
         });
     });
-    </script>
+</script>
 </body>
 </html>
