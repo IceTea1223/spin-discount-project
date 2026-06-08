@@ -922,7 +922,7 @@ if(!isset($_SESSION['student_id'])) {
             <div style="font-family: serif;">You Got</div>
             <div>
                 <span class="discount-number" id="discountPercent">0</span>
-                <span class="discount-symbol-lg">%</span>
+                <span class="discount-symbol-lg"></span>
             </div>
             <div style="font-family: serif;">OFF</div>
         </div>
@@ -949,568 +949,293 @@ if(!isset($_SESSION['student_id'])) {
     </div>
 </div>
     
-   <script>
-    // ===============================
-// PRIZES
-// ===============================
-const WEIGHTED_DISCOUNTS = [
-    100,
-    "អាយធីស្មោះ",
-    30,
-    60,
-    80,
-    "អាយធីស្រឡាញ់គេម្នាក់ឯង",
-    100,
-    50,
-    30,
-    90,
-    100,
-    "អាយធីសាវ៉ា",
-    70,
-    90,
-    80
-];
-
-const SEGMENTS = [...WEIGHTED_DISCOUNTS];
-
-const COLOR_PALETTE = [
-    '#FFD700', // Gold
-    '#003366', // Navy Blue
-    '#FFD700',
-    '#003366',
-    '#FFD700',
-    '#003366',
-    '#FFD700',
-    '#003366',
-    '#FFD700',
-    '#003366',
-    '#FFD700',
-    '#003366',
-    '#FFD700',
-    '#003366',
-    '#FFD700'
-];
-
-let currentRotation = 0;
-let spinning = false;
-let animFrame = null;
-
-const canvas = document.getElementById('wheelCanvas');
-const ctx = canvas.getContext('2d');
-
-const centerX = canvas.width / 2;
-const centerY = canvas.height / 2;
-const radius = 215;
-
-// ===============================
-// RANDOM PRIZE
-// ===============================
-function getRandomSegmentValue() {
-    return SEGMENTS[
-        Math.floor(Math.random() * SEGMENTS.length)
+<script>
+    // FIXED: All segments (14 items from weighted array)
+    const SEGMENTS = [
+       100,
+       30,
+       60,
+       80,
+       "អាយធីស្រឡាញ់គេម្នាក់ឯង",  // Index 4
+       100,
+       50,
+       40,
+       100,
+       "អាយធីសាវ៉ា",              // Index 9
+       70,
+       90,
+       30,
+       80,
+       "អាយធីស្មោះ"                // Index 14
     ];
-}
 
-// ===============================
-// DRAW WHEEL
-// ===============================
-function drawWheel() {
-
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-    // Outer Ring
-    ctx.beginPath();
-    ctx.arc(
-        centerX,
-        centerY,
-        radius + 12,
-        0,
-        Math.PI * 2
-    );
-    ctx.strokeStyle = '#FFD700';
-    ctx.lineWidth = 12;
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.arc(
-        centerX,
-        centerY,
-        radius + 24,
-        0,
-        Math.PI * 2
-    );
-    ctx.strokeStyle = '#FFF4B0';
-    ctx.lineWidth = 4;
-    ctx.stroke();
-
-    const angleStep =
-        (Math.PI * 2) / SEGMENTS.length;
-
-    for (
-        let i = 0;
-        i < SEGMENTS.length;
-        i++
-    ) {
-
-        const start =
-            i * angleStep +
-            currentRotation;
-
-        const end =
-            (i + 1) * angleStep +
-            currentRotation;
-
-        const gradient =
-            ctx.createLinearGradient(
-                centerX - radius,
-                centerY - radius,
-                centerX + radius,
-                centerY + radius
-            );
-
-        gradient.addColorStop(
-            0,
-            COLOR_PALETTE[
-                i % COLOR_PALETTE.length
-            ]
-        );
-
-        gradient.addColorStop(
-            1,
-            '#ffffff22'
-        );
-
+    // Helper to get numeric discount: if prize is number return it, else 0
+    function getNumericDiscount(prize) {
+        return typeof prize === 'number' ? prize : 0;
+    }
+    
+    const COLOR_PALETTE = ['#FFD700', '#0009bb'];
+    
+    let currentRotation = 0;
+    let spinning = false;
+    let animFrame = null;
+    
+    const canvas = document.getElementById('wheelCanvas');
+    const ctx = canvas.getContext('2d');
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = 215;
+    
+    // Draw wheel with current rotation (pointer is at TOP = -PI/2)
+    function drawWheel() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Outer rings
         ctx.beginPath();
-        ctx.fillStyle = gradient;
-        ctx.moveTo(
-            centerX,
-            centerY
-        );
-        ctx.arc(
-            centerX,
-            centerY,
-            radius,
-            start,
-            end
-        );
-        ctx.fill();
-
-        ctx.strokeStyle = '#FFFFFF';
-        ctx.lineWidth = 3;
+        ctx.arc(centerX, centerY, radius + 12, 0, Math.PI * 2);
+        ctx.strokeStyle = '#FFD700';
+        ctx.lineWidth = 12;
         ctx.stroke();
-
-        ctx.save();
-
-        ctx.translate(
-            centerX,
-            centerY
-        );
-
-        ctx.rotate(
-            start + angleStep / 2
-        );
-
-        ctx.fillStyle = '#FFFFFF';
-
-        ctx.font =
-            'bold 16px "Kantumruy Pro", sans-serif';
-
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-
-        ctx.shadowColor =
-            'rgba(0,0,0,0.6)';
-
-        ctx.shadowBlur = 0;
-
-        let text =
-            typeof SEGMENTS[i] ===
-            'number'
-                ? SEGMENTS[i] + '%'
-                : SEGMENTS[i];
-
-        if (text.length > 12) {
-            text =
-                text.substring(
-                    0,
-                    12
-                ) + '...';
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius + 24, 0, Math.PI * 2);
+        ctx.strokeStyle = '#FFF4B0';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+        
+        const angleStep = (Math.PI * 2) / SEGMENTS.length;
+        
+        for (let i = 0; i < SEGMENTS.length; i++) {
+            const start = i * angleStep + currentRotation;
+            const end = (i + 1) * angleStep + currentRotation;
+            
+            ctx.beginPath();
+            const gradient = ctx.createLinearGradient(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+            gradient.addColorStop(0, COLOR_PALETTE[i % COLOR_PALETTE.length]);
+            ctx.fillStyle = gradient;
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, start, end);
+            ctx.fill();
+            
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Draw text
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(start + angleStep / 2);
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 16px "Kantumruy Pro", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            let text = typeof SEGMENTS[i] === 'number' ? SEGMENTS[i] + '%' : SEGMENTS[i];
+            if (text.length > 12) text = text.substring(0, 12) + '...';
+            ctx.fillText(text, radius * 0.62, 0);
+            ctx.restore();
         }
-
-        ctx.fillText(
-            text,
-            radius * 0.62,
-            0
-        );
-
+        
+        // Center design
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 65, 0, Math.PI * 2);
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+        ctx.strokeStyle = '#FFD700';
+        ctx.lineWidth = 5;
+        ctx.stroke();
+        
+        const centerGradient = ctx.createRadialGradient(centerX, centerY, 5, centerX, centerY, 60);
+        centerGradient.addColorStop(0, '#60A5FA');
+        centerGradient.addColorStop(1, '#1700ae');
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 52, 0, Math.PI * 2);
+        ctx.fillStyle = centerGradient;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 12, 0, Math.PI * 2);
+        ctx.fillStyle = '#FFD700';
+        ctx.fill();
+        
+        // Draw static pointer (red triangle at top)
+        ctx.save();
+        ctx.fillStyle = '#E53935';
+        ctx.beginPath();
+        ctx.moveTo(centerX - 14, centerY - radius - 18);
+        ctx.lineTo(centerX + 14, centerY - radius - 18);
+        ctx.lineTo(centerX, centerY - radius + 2);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = '#FFD700';
+        ctx.beginPath();
+        ctx.moveTo(centerX - 8, centerY - radius - 12);
+        ctx.lineTo(centerX + 8, centerY - radius - 12);
+        ctx.lineTo(centerX, centerY - radius - 2);
+        ctx.closePath();
+        ctx.fill();
         ctx.restore();
     }
-
-    // Center White Circle
-    ctx.beginPath();
-    ctx.arc(
-        centerX,
-        centerY,
-        65,
-        0,
-        Math.PI * 2
-    );
-    ctx.fillStyle = '#fff';
-    ctx.fill();
-
-    ctx.strokeStyle =
-        '#FFD700';
-
-    ctx.lineWidth = 5;
-    ctx.stroke();
-
-    // Blue Circle
-    const centerGradient =
-        ctx.createRadialGradient(
-            centerX,
-            centerY,
-            5,
-            centerX,
-            centerY,
-            60
-        );
-
-    centerGradient.addColorStop(
-        0,
-        '#60A5FA'
-    );
-
-    centerGradient.addColorStop(
-        1,
-        '#1E3A8A'
-    );
-
-    ctx.beginPath();
-    ctx.arc(
-        centerX,
-        centerY,
-        52,
-        0,
-        Math.PI * 2
-    );
-    ctx.fillStyle =
-        centerGradient;
-    ctx.fill();
-
-    // Center Dot
-    ctx.beginPath();
-    ctx.arc(
-        centerX,
-        centerY,
-        12,
-        0,
-        Math.PI * 2
-    );
-    ctx.fillStyle =
-        '#FFD700';
-    ctx.fill();
-}
-
-// ===============================
-// DETECT RESULT
-// ===============================
-function getCurrentSegmentValue() {
-
-    const pointerAngle =
-        -Math.PI / 2;
-
-    let adjusted =
-        pointerAngle -
-        currentRotation;
-
-    adjusted =
-        (
-            (
-                adjusted %
-                (Math.PI * 2)
-            ) +
-            Math.PI * 2
-        ) %
-        (Math.PI * 2);
-
-    const angleStep =
-        (Math.PI * 2) /
-        SEGMENTS.length;
-
-    const idx =
-        Math.floor(
-            adjusted /
-            angleStep
-        ) %
-        SEGMENTS.length;
-
-    return SEGMENTS[idx];
-}
-
-// ===============================
-// SPIN
-// ===============================
-function spinWheel(callback) {
-
-    if (spinning) return;
-
-    spinning = true;
-
-    const duration = 4000;
-
-    const startTime =
-        performance.now();
-
-    const startRotation =
-        currentRotation;
-
-    const targetPrize =
-        getRandomSegmentValue();
-
-    const targetIndex =
-        SEGMENTS.indexOf(
-            targetPrize
-        );
-
-    const angleStep =
-        (Math.PI * 2) /
-        SEGMENTS.length;
-
-    const targetAngle =
-        (
-            targetIndex *
-            angleStep
-        ) +
-        angleStep / 2;
-
-    const fullRotations =
-        10 +
-        Math.floor(
-            Math.random() * 5
-        );
-
-    const finalRotation =
-        startRotation +
-        (
-            fullRotations *
-            Math.PI *
-            2
-        ) +
-        targetAngle +
-        Math.PI / 2;
-
-    function animate(now) {
-
-        const elapsed =
-            now -
-            startTime;
-
-        const progress =
-            Math.min(
-                elapsed /
-                duration,
-                1
-            );
-
-        const ease =
-            1 -
-            Math.pow(
-                1 - progress,
-                4
-            );
-
-        currentRotation =
-            startRotation +
-            (
-                finalRotation -
-                startRotation
-            ) *
-            ease;
-
-        drawWheel();
-
-        if (
-            progress < 1
-        ) {
-            animFrame =
-                requestAnimationFrame(
-                    animate
-                );
-        } else {
-
-            spinning = false;
-
-            callback(
-                getCurrentSegmentValue()
-            );
-        }
+    
+    // Get segment index that the pointer (TOP = -PI/2 angle) is pointing to
+    function getCurrentSegmentIndex() {
+        // Pointer angle in world coordinates (fixed: -PI/2 radians = top)
+        const pointerAngle = -Math.PI / 2;
+        // Rotation offset: we need to find which segment's range contains (pointerAngle - currentRotation)
+        let rawAngle = pointerAngle - currentRotation;
+        // Normalize to [0, 2*PI)
+        rawAngle = ((rawAngle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+        const angleStep = (Math.PI * 2) / SEGMENTS.length;
+        const idx = Math.floor(rawAngle / angleStep) % SEGMENTS.length;
+        return idx;
     }
-
-    requestAnimationFrame(
-        animate
-    );
-}
-
-// ===============================
-// INITIAL DRAW
-// ===============================
-drawWheel();
-
-// ===============================
-// BUTTON EVENTS
-// ===============================
-$(document).ready(function () {
-
-    $('#spinBtn').click(function () {
-
+    
+    function getCurrentSegmentValue() {
+        return SEGMENTS[getCurrentSegmentIndex()];
+    }
+    
+    function getRandomSegmentValue() {
+        const randomIndex = Math.floor(Math.random() * SEGMENTS.length);
+        return SEGMENTS[randomIndex];
+    }
+    
+    function spinWheel(callback) {
         if (spinning) return;
-
-        const $btn =
-            $(this);
-
-        $btn.prop(
-            'disabled',
-            true
-        );
-
-        spinWheel(
-            function (prize) {
-
-                const originalPrice =
-                    parseFloat(
-                        <?php echo json_encode($_SESSION['course_price']); ?>
-                    );
-
-                const discount =
-                    typeof prize ===
-                    'number'
-                        ? prize
-                        : 0;
-
-                const discountAmount =
-                    (
-                        originalPrice *
-                        discount
-                    ) / 100;
-
-                const finalPrice =
-                    originalPrice -
-                    discountAmount;
-
-                $('#discountPercent')
-                    .text(
-                        discount
-                    );
-
-                $('#originalPrice')
-                    .text(
-                        '$' +
-                        originalPrice.toFixed(
-                            2
-                        )
-                    );
-
-                $('#discountAmount')
-                    .text(
-                        '-$' +
-                        discountAmount.toFixed(
-                            2
-                        )
-                    );
-
-                $('#finalPrice')
-                    .text(
-                        '$' +
-                        finalPrice.toFixed(
-                            2
-                        )
-                    );
-
-                $('#prizeName')
-                    .text(
-                        prize
-                    );
-
-                $('#resultModal')
-                    .css(
-                        'display',
-                        'flex'
-                    )
-                    .hide()
-                    .fadeIn(
-                        300
-                    );
-
-                window.selectedPrize =
-                    prize;
-
-                window.selectedDiscount =
-                    discount;
-
-                $btn.prop(
-                    'disabled',
-                    false
-                );
+        spinning = true;
+        
+        const duration = 4000;
+        const startTime = performance.now();
+        const startRotation = currentRotation;
+        
+        const targetPrize = getRandomSegmentValue();
+        let targetIndex = -1;
+        // Find first occurrence (if duplicate values exist, fine)
+        for (let i = 0; i < SEGMENTS.length; i++) {
+            if (SEGMENTS[i] === targetPrize) {
+                targetIndex = i;
+                break;
             }
-        );
-    });
-
-    $('#claimBtn').click(function () {
-
-        $.ajax({
-
-            url:
-                'api/process_spin.php',
-
-            type:
-                'POST',
-
-            dataType:
-                'json',
-
-            data: {
-                prize:
-                    window.selectedPrize,
-                discount:
-                    window.selectedDiscount
-            },
-
-            success:
-                function (
-                    resp
-                ) {
-
-                    if (
-                        resp.success
-                    ) {
-
-                        window.location.href =
-                            'result.php';
-
+        }
+        if (targetIndex === -1) targetIndex = 0;
+        
+        const angleStep = (Math.PI * 2) / SEGMENTS.length;
+        // The middle angle of target segment in unrotated coordinates
+        const targetSegmentMidAngle = targetIndex * angleStep + angleStep / 2;
+        
+        // Pointer is fixed at -PI/2. We need final rotation such that:
+        // (targetSegmentMidAngle + finalRotation) mod 2PI === pointerAngle
+        // So finalRotation = pointerAngle - targetSegmentMidAngle + k*2PI
+        const pointerAngle = -Math.PI / 2;
+        let finalRotationOffset = pointerAngle - targetSegmentMidAngle;
+        // Normalize to [0, 2PI)
+        finalRotationOffset = ((finalRotationOffset % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+        
+        const fullRotations = 10 + Math.floor(Math.random() * 6); // 10-15 full turns
+        const totalDelta = fullRotations * Math.PI * 2 + finalRotationOffset;
+        const finalRotation = startRotation + totalDelta;
+        
+        function animate(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            // Cubic ease out for smooth stop
+            const ease = 1 - Math.pow(1 - progress, 3);
+            currentRotation = startRotation + (finalRotation - startRotation) * ease;
+            drawWheel();
+            
+            if (progress < 1) {
+                animFrame = requestAnimationFrame(animate);
+            } else {
+                // Final alignment: ensure exact final rotation to land precisely on target
+                currentRotation = finalRotation;
+                drawWheel();
+                spinning = false;
+                const landedPrize = getCurrentSegmentValue();
+                const landedIndex = getCurrentSegmentIndex();
+                
+                // Add 2 second delay before showing the modal
+                setTimeout(function() {
+                    callback(landedPrize, landedIndex);
+                }, 1500);
+            }
+        }
+        
+        if (animFrame) cancelAnimationFrame(animFrame);
+        animFrame = requestAnimationFrame(animate);
+    }
+    
+    drawWheel();
+    
+    $(document).ready(function () {
+        $('#spinBtn').click(function () {
+            if (spinning) return;
+            const $btn = $(this);
+            $btn.prop('disabled', true);
+            
+            spinWheel(function (prize, segmentIndex) {
+                const originalPrice = parseFloat(<?php echo json_encode($_SESSION['course_price']); ?>);
+                const discount = getNumericDiscount(prize);
+                const discountAmount = (originalPrice * discount) / 100;
+                const finalPrice = originalPrice - discountAmount;
+                
+                // Specific messages for specific segments
+                const strings = [
+                    "ឈប់ស្រឡាញ់គេម្នាក់ឯងទៅ",  // For SEGMENTS[4] index 4
+                    "ឈប់សាវ៉ាទៅ",              // For SEGMENTS[9] index 9
+                    "ស្មោះដូចខ្ញុំដែរ"          // For SEGMENTS[14] index 14
+                ];
+                
+                // Check which segment was landed on and show appropriate message
+                if (segmentIndex === 4) {
+                    // SEGMENTS[4] - "អាយធីស្រឡាញ់គេម្នាក់ឯង"
+                    $('#discountPercent').text(strings[0]);
+                    $('#discountAmount').text('-$0.00');
+                    $('#finalPrice').text('$' + originalPrice.toFixed(2));
+                } else if (segmentIndex === 9) {
+                    // SEGMENTS[9] - "អាយធីសាវ៉ា"
+                    $('#discountPercent').text(strings[1]);
+                    $('#discountAmount').text('-$0.00');
+                    $('#finalPrice').text('$' + originalPrice.toFixed(2));
+                } else if (segmentIndex === 14) {
+                    // SEGMENTS[14] - "អាយធីស្មោះ"
+                    $('#discountPercent').text(strings[2]);
+                    $('#discountAmount').text('-$0.00');
+                    $('#finalPrice').text('$' + originalPrice.toFixed(2));
+                } else {
+                    // Handle numeric discounts
+                    $('#discountPercent').text(discount + " %");
+                    $('#discountAmount').text('-$' + discountAmount.toFixed(2));
+                    $('#finalPrice').text('$' + finalPrice.toFixed(2));
+                }
+                
+                $('#originalPrice').text('$' + originalPrice.toFixed(2));
+                $('#resultModal').css('display', 'flex').hide().fadeIn(300);
+                window.selectedPrize = prize;
+                window.selectedDiscount = discount;
+                window.selectedSegmentIndex = segmentIndex;
+                $btn.prop('disabled', false);
+            });
+        });
+        
+        $('#claimBtn').click(function () {
+            $.ajax({
+                url: 'api/process_spin.php',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    prize: window.selectedPrize,
+                    discount: window.selectedDiscount,
+                    segmentIndex: window.selectedSegmentIndex
+                },
+                success: function (resp) {
+                    if (resp.success) {
+                        window.location.href = 'result.php';
                     } else {
-
-                        alert(
-                            resp.error ||
-                            'Error'
-                        );
+                        alert(resp.error || 'Error processing spin');
                     }
                 },
-
-            error:
-                function () {
-
-                    alert(
-                        'Network Error'
-                    );
+                error: function () {
+                    alert('Network Error. Please try again.');
                 }
+            });
         });
     });
-});
-   </script>
+</script>
 </body>
 </html>
