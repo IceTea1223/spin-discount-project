@@ -953,7 +953,7 @@ if(!isset($_SESSION['student_id'])) {
     // FIXED: All segments (14 items from weighted array)
     const SEGMENTS = [
        100,
-       30,
+       40,
        60,
        80,
        "អាយធីស្រឡាញ់គេម្នាក់ឯង",  // Index 4
@@ -969,9 +969,9 @@ if(!isset($_SESSION['student_id'])) {
        "អាយធីស្មោះ"                // Index 14
     ];
 
-    // Helper to get numeric discount: if prize is number return it, else 0
+    // Helper to get numeric discount: if prize is number return it, else return 30
     function getNumericDiscount(prize) {
-        return typeof prize === 'number' ? prize : 0;
+        return typeof prize === 'number' ? prize : 30;
     }
     
     const COLOR_PALETTE = ['#FFD700', '#0009bb'];
@@ -1174,32 +1174,15 @@ if(!isset($_SESSION['student_id'])) {
                 const discountAmount = (originalPrice * discount) / 100;
                 const finalPrice = originalPrice - discountAmount;
                 
-                // Specific messages for specific segments
-                const strings = [
-                    "ឈប់ស្រឡាញ់គេម្នាក់ឯងទៅ",  // For SEGMENTS[4] index 4
-                    "ឈប់សាវ៉ាទៅ",              // For SEGMENTS[9] index 9
-                    "ស្មោះដូចខ្ញុំដែរ"          // For SEGMENTS[14] index 14
-                ];
-                
-                // Check which segment was landed on and show appropriate message
-                if (segmentIndex === 4) {
-                    // SEGMENTS[4] - "អាយធីស្រឡាញ់គេម្នាក់ឯង"
-                    $('#discountPercent').text(strings[0]);
-                    $('#discountAmount').text('-$0.00');
-                    $('#finalPrice').text('$' + originalPrice.toFixed(2));
-                } else if (segmentIndex === 9) {
-                    // SEGMENTS[9] - "អាយធីសាវ៉ា"
-                    $('#discountPercent').text(strings[1]);
-                    $('#discountAmount').text('-$0.00');
-                    $('#finalPrice').text('$' + originalPrice.toFixed(2));
-                } else if (segmentIndex === 14) {
-                    // SEGMENTS[14] - "អាយធីស្មោះ"
-                    $('#discountPercent').text(strings[2]);
-                    $('#discountAmount').text('-$0.00');
-                    $('#finalPrice').text('$' + originalPrice.toFixed(2));
+                // Check if landed on string (non-numeric) segment
+                if (typeof prize === 'string') {
+                    // For string segments, show custom message and use 30% discount
+                    $('#discountPercent').text(prize);
+                    $('#discountAmount').text('-$' + discountAmount.toFixed(2));
+                    $('#finalPrice').text('$' + finalPrice.toFixed(2));
                 } else {
                     // Handle numeric discounts
-                    $('#discountPercent').text(discount + " %");
+                    $('#discountPercent').text(discount + "%");
                     $('#discountAmount').text('-$' + discountAmount.toFixed(2));
                     $('#finalPrice').text('$' + finalPrice.toFixed(2));
                 }

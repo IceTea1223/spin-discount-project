@@ -448,7 +448,7 @@ const coursesData = [
         day: "Mon-Thur",
         time: "9:00-10:30",
         slot: "morning",
-        price: 99,
+        price: 79,
       },
       {
         type: "weekday",
@@ -469,7 +469,7 @@ const coursesData = [
         day: "Sat-Sun",
         time: "8:00-11:00",
         slot: "morning",
-        price: 99,
+        price: 79,
       },
       {
         type: "weekend",
@@ -489,7 +489,7 @@ const coursesData = [
         day: "Mon-Thur",
         time: "9:00-10:30",
         slot: "morning",
-        price: 99,
+        price: 79,
       },
       {
         type: "weekday",
